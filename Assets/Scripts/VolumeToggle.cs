@@ -1,20 +1,31 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class VolumeToggle : MonoBehaviour
 {
+    private const float MutedLevel = -80;
+
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private string _audioGroup;
 
+    private void Awake()
+    {
+        if (TryGetComponent(out Toggle toggle))
+        {
+            toggle.onValueChanged.AddListener(ToggleMute);
+        }
+    }
+
     public void ToggleMute(bool isMuted)
     {
-        float level = 1;
-
         if (isMuted)
         {
-            level = 0.0001f;
+            _audioMixer.SetFloat(_audioGroup, MutedLevel);
         }
-
-        _audioMixer.SetFloat(_audioGroup, Mathf.Log10(level) * 20);
+        else
+        {
+            _audioMixer.SetFloat(_audioGroup, 0);
+        }
     }
 }
