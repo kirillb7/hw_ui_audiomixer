@@ -6,29 +6,37 @@ using UnityEngine.UI;
 public class VolumeSlider : MonoBehaviour
 {
     private const float LevelMultiplier = 20;
+    private const float MutedLevel = -80;
 
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private string _audioGroup;
 
-    private Slider slider;
+    private Slider _slider;
 
     private void Awake()
     {
-        slider = GetComponent<Slider>();
+        _slider = GetComponent<Slider>();
     }
 
     private void OnEnable()
     {
-        slider.onValueChanged.AddListener(SetVolume);
+        _slider.onValueChanged.AddListener(SetVolume);
     }
 
     private void OnDisable()
     {
-        slider.onValueChanged.RemoveListener(SetVolume);
+        _slider.onValueChanged.RemoveListener(SetVolume);
     }
 
     public void SetVolume(float level)
     {
-        _audioMixer.SetFloat(_audioGroup, Mathf.Log10(level) * LevelMultiplier);
+        if (level == 0)
+        {
+            _audioMixer.SetFloat(_audioGroup, MutedLevel);
+        }
+        else
+        {
+            _audioMixer.SetFloat(_audioGroup, Mathf.Log10(level) * LevelMultiplier);
+        }
     }
 }

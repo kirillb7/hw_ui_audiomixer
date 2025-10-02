@@ -10,21 +10,21 @@ public class VolumeToggle : MonoBehaviour
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private string _audioGroup;
 
-    private Toggle toggle;
+    private Toggle _toggle;
 
     private void Awake()
     {
-        toggle = GetComponent<Toggle>();
+        _toggle = GetComponent<Toggle>();
     }
 
     private void OnEnable()
     {
-        toggle.onValueChanged.AddListener(ToggleMute);
+        _toggle.onValueChanged.AddListener(ToggleMute);
     }
 
     private void OnDisable()
     {
-        toggle.onValueChanged.RemoveListener(ToggleMute);
+        _toggle.onValueChanged.RemoveListener(ToggleMute);
     }
 
     public void ToggleMute(bool isMuted)

@@ -4,22 +4,22 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class SoundButton : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource _audioSource;
 
-    private Button button;
+    private Button _button;
 
     private void Awake()
     {
-        button = GetComponent<Button>();
+        _button = GetComponent<Button>();
     }
 
     private void OnEnable()
     {
-        button.onClick.AddListener(audioSource.Play);
+        _button.onClick.AddListener(_audioSource.Play);
     }
 
     private void OnDisable()
     {
-        button.onClick.RemoveListener(audioSource.Play);
+        _button.onClick.RemoveListener(_audioSource.Play);
     }
 }
