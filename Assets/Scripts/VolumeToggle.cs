@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Toggle))]
 public class VolumeToggle : MonoBehaviour
 {
     private const float MutedLevel = -80;
@@ -9,12 +10,21 @@ public class VolumeToggle : MonoBehaviour
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private string _audioGroup;
 
+    private Toggle toggle;
+
     private void Awake()
     {
-        if (TryGetComponent(out Toggle toggle))
-        {
-            toggle.onValueChanged.AddListener(ToggleMute);
-        }
+        toggle = GetComponent<Toggle>();
+    }
+
+    private void OnEnable()
+    {
+        toggle.onValueChanged.AddListener(ToggleMute);
+    }
+
+    private void OnDisable()
+    {
+        toggle.onValueChanged.RemoveListener(ToggleMute);
     }
 
     public void ToggleMute(bool isMuted)

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Slider))]
 public class VolumeSlider : MonoBehaviour
 {
     private const float LevelMultiplier = 20;
@@ -9,12 +10,21 @@ public class VolumeSlider : MonoBehaviour
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private string _audioGroup;
 
+    private Slider slider;
+
     private void Awake()
     {
-        if (TryGetComponent(out Slider slider))
-        {
-            slider.onValueChanged.AddListener(SetVolume);
-        }
+        slider = GetComponent<Slider>();
+    }
+
+    private void OnEnable()
+    {
+        slider.onValueChanged.AddListener(SetVolume);
+    }
+
+    private void OnDisable()
+    {
+        slider.onValueChanged.RemoveListener(SetVolume);
     }
 
     public void SetVolume(float level)
